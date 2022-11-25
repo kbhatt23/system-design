@@ -1,0 +1,212 @@
+jai shree ganesh
+
+Why we need software architechture
+- we always build a structure whenever we build something,
+  the structure/architechture shows the intent of product for example: we can not structure theatre for home use and vice versa
+  hence architechture shows the intenet of product
+- Architechture drives the performance of the system  
+- Architechture drives the scalability of the system
+- Architechture drives the fault tolerance/ security of the system
+- Architechture drive the ease of enhancement for the product
+  
+Definition of software architechture
+- Describes high level description of systems's structure
+  -> it do not show exact implementation but an abstraction of what is to be done/ intent of the system
+  -> does not represent the inner implementation like which programming language, which exact D.B etc that is part of implementation and not architechture
+
+- Describes various components and theri high level tasks and how they will communicate with each other to reach end goal of the product  
+- Ensures the constraints are adhered before reaching the end goal
+
+Challenges of design phase/ softwre architechture
+-> unlike implementation, testing and deployment phase in case of design phase there is no gurantee that our architechture is most optimized
+what to do:
+a. follow methodological / procedural step by step process in architechture
+b. follow industry best practises and common design patterns
+
+Types of requirements
+a. Features: Functional requirements
+  : What a system should do and behave
+b. Qualities: Non Functional requirements
+  : How a system must do: like scalability, fault tolerance , availability , performance, security etc
+c. Boundaries: Constraints
+    eg: budget, limited time lines, limit of engineers ,  quality and quantity of engineers etc
+	
+- These requirement categories are also known as drivers of software architechture	
+
+- Generally in most cases a system architechture redesign happens in case Non functional requirement fails
+ eg: 
+ a. system is not fast enough : performance is low
+ b. scalability: system fails when load increases
+ c. hard to maintain: code is nto easy to add new features: dev an code faster and easy to deploy code on production
+ d. not fault tolerant
+ e. not secured
+ f. high availability
+ 
+-> so it is very important while design phase itslef NFR are documented and gathered perfectly
+-> mostly redesign in architechture do not happens due to failuer in functional requirements 
+
+- Remember the NFS should be quantifiable
+	eg: perfomance in ms: time taken to complete tasks
+	    high availability: 99.999 %
+		scalability: 100 TPS
+		code maintainability and time to move to production: sprint size : CI/CD
+		Fault Tolerance: failure percent monitoring
+- Also these attributes should be replicable using automation tools for testability		
+- considerations in NFRs
+a. These should be quantifiable and replicable using tools
+b. check for feasiblity first during gathering phase
+c. need to do tradeoff among these attributes internally
+  eg tradeoff b/w security and performance, consistency and availability etc		
+  
+Types of constraints in requirement
+a. Technical
+   eg: company have licenses of limited data bases : it impacts architechtural decision for sure
+    company running app on premise and blocking cloud: we will loose fatures provided by cloud like health check, scalabilty 
+	and other software as a service   : direct impact on architechture decision
+	browser not supporting that protocol: significant decision for architechture
+b. business: eg limited budget, deadline time, direct impact on architechture so that this can be made possible
+c. legal constraints: eg country forces data not to store outside the country	
+
+
+
+Performance metrics
+a. resposne time: total time taken for server to respond to client: = netwrok time + server waiting time + code processing time
+   calculated in ms
+b. Throughput: amount of transactions/data per sec or per unit of time: eg TPS, TPM -> 1 transation per second or in data: 1 MB/minute
+
+important considerations
+a. calcualte proper latency time: = netwrok time + server waiting time + code processing time
+b. use percentiles and not average for latency and throughput
+c. find root cause of performance degradation
+
+- potential resource utilization causes/ perfomance degradation causes
+a. CPU
+b. RAM/memory
+c. hard disk I/O
+d. Netwrok I/O
+e. Queue capacity
+f. Thread capacity
+
+
+categories of failure:
+- humar error: wrong config made by dev, wrong d.b query/script called, untested code deployment: it can cause error/downtime
+- software error: out of mermory error, thread blocked, null pointer, bad g.c config, can cause downtime as well as errors
+- hardware error : netwrok gone down, machine gone down, server gone down etc: can cause error
+fault tolerance is a way of ensuring high availability by giving ability to work even on downtime/errors mentioned above
+
+Quality services provided by Load balancers:
+a. scalability
+b. high availability and fault tolerance: using health check do not redirect to faulty server 
+	and even use auto scaling group to restart faulty server
+c. maintainability: client and server are lightly coupled now, client need not to know instance available on server side
+   no need to use service discoer , registration and code wise load balancing, client do not know inner implementation of server
+d. latency increases at the cost of higher throughput and maintainability   
+
+Types of Load Balancers:
+
+a. DNS: domain name system: -> it is part of netwrok internet infrastructure
+	with the help of which user friendly domains can be resolved to get internal ip
+  user / human can not remember all the ups but can remember human friendly names and domains and DNS help to fetch internal ip of these domains
+  Remember that in DNS we can register multiple ips for the same domain and at one point of time DNs provide on ip of that list
+  hence DNS can also act like load balancer, eg: Route53 can load balance among ELB in different AZs
+  Disadvantages: 
+  - DNS do not do health checks and due to TTL and cache it might resolve an IP that is actally not healthy
+  - do not support intelligent algorithms for routing eg geolocation ased, load based, latency based, least CPU based etc  
+	,: support only round robind 
+  - does not hide internal ip and details can be less secured
+b. hardware load balancers are dedicated load balancers running on hardware best suited for load balancing computing
+c. software load balancers: software like ha proxy, nginx can be running on any hardware may not be otimized for load balancing tasks
+   but it si cheaper than hardware load balancers
+
+Why AWS ELB support load balancing for machines in different A.Zs of same region
+ as netwrok call from one ELB to machines which are in another region will be huge and hence not highly performant
+hence we take 2 ELB in each region and use route 53 DNS to load balance these 2 ELBs in different regions 
+
+- the data normalization using seperate tables and relations are important for 
+-> easier maintainability
+-> easier understanding and visualizing
+-> very importatnt point: to reduce the data storage
+
+ACID: Consistency
+a. it ensures that once a transaction is committed everyone sees that new data,
+ should not be like some one is seeing old data and some seeing new 
+b. it ensures that the constraint based on columns are maintained and trasncaion roll backs
+  eg: bank balance can not be negative so that constraint has to be followed
+
+disadvantages of SQL
+-> schema is restrict for  table , it enforces us to add coumn/remove column at runtime and that is not flexible for future development
+-> relational data are tightly coupled to tables and hence not easy to partition in terms of horizontal scaling
+-> joins are needed that can cause slowness in querying  
+
+advantages of nosql
+a. they allow logical grouping of records without forcing all these records to have same schema
+b. sql is good for human mind based modelling like tables , but in computer it is not the best way to store
+   in computer science we already have data structure and that is not modelled in table format
+   nosql like redis , mongo provide data structure store
+d. fastger queries
+e. can handle huge data as a record is slef independent and can be easily partitioned and hence great for scaling 
+  hence nosql can store huge data efficiently with faster reads and hence allows more read/writes
+
+Tradeoff of nosql
+a. do not support fixed SQL as each nosql dbms has its own data structure and hence different query/script
+b. tougher learning curve
+c. not good for data analytics: use data warehouse like redshift for that
+d. ACID not supported well way as CAP theorom comes into picture  
+
+Indexing benefits
+- increases performance in queries however slows down erite operations
+- while searching by specific field it keeps buckets of index group by that column values and hence it takes o(k) time and not o(n)
+- it also helps in sorting as data in each index is already sorted by natural order based on that column's data type
+-  it increases time in writing as current table as well as index has to be updated
+
+remeber data base index is nothing but seperate table in sql
+the index table can be implemented either using hashmap(for queries for text search) and biary search tree eg: red black tree for order by case
+
+trade off for indexing while taking benefit of fast read queries
+- write operation si slower as it has to insert in 2 tables (one original table and another one for index table)
+- it takes more space for indexed table
+
+Benefits of D.B replicas multi nodex D.B
+a. fault tolerance : remmoves single point of failure
+b. data partitioning helps in more users able to query more: high throughput
+   as for each node there is a max limit of I/O in DB, for partitioned data more uers can use different node and hence throughput increases
+   
+- it is not use case of stroing blob/ object on D.Balancers
+  as there is limit of max size of that single record/file : generally file is converted into bytes and that is stored
+  query is not needed so d.b will be bad choice
+  
+use cases of object storage
+: file uploaded by users like pdf, image, document for further processing
+: d.b snapshot : typically in tbs of space  
+: images , videos that might change, read/downloaded
+
+charachters of blob:
+- each file will be very big like in gbs
+- we can have huge amount of these files: scale
+   
+We can store blob/unstructured data in distributed store but it has disadvantages
+- have limit on files
+- no api based support: have only file based i/o however good for performance
+- it allows file to be modified but that can be dangerois sometimes but mostly useful and performant
+- it only looks like file storage in code
+- there is a limit of single file and lalso number of files
+- performance is not as fast
+
+Blob store / big large object store like s3 is 
+- scalable
+- no limit of files
+- very high limit of single file in tbs
+- good in api way of fetching (rest api unlike nfs)
+- object versioning: same file can not be modified but a new version is created
+- it has multiple storage capacities based on usage
+: all will be highly available but read and write performance will be different and pricee will be different
+  eg: very less freequent file can be stored in cheap drives with lower rate but speed of download and upload will be slower
+  also there will be limitation of read/write attempts
+- each ibject have key and value and each has metadata like ACL for security  
+- data is not stored in file storage/ directory structure: directory stored in buckets
+  file name, file id and actual file    
+  
+drawbacks of blob
+: lack performance as compared to NFS
+: forces versioning and data is immutable
+: only allow rest api based be it self coded or SDK based
