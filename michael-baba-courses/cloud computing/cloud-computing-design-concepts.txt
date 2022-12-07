@@ -1,0 +1,201 @@
+shree ganeshaya namah
+shree sita rama lakshman hanuman namah
+
+- Functional requirements are mostly different for each system and hence it is very tough to learn from other systems
+- NFR quality attributes actually dictates the system architechture and design and also 
+  a lot of different projects can face similar NFR problems and hence we can learn to solve problems from other projects/systems
+  
+- As problems and solutions related to NFRs can be common for multiple projects/systems in the world
+  it is good apprrach to club together the common architechtural patterns and use it across the industry
+  simlar to design patterns we have software architechtural patterns to solve common design problems  
+  
+- Design Patterns vs software architechtural patterns
+focus of  Design Patterns
+a. object oriented programming like java,c#, c++ etc
+b. standalone application dev
+
+benefits of Design Patterns
+a. Good code organization but for single codebase/standalone application
+b. code reusability
+c. code maintainability and extensibility
+d. code communication and support
+
+Design Patterns not useful in 
+a. distributed computing using indepdent deployable services impelmented in different tech stacks
+b. large scale systems/ non standalone applications
+
+Cloud computing is itself a software architechtural pattern that solves big problems that a lot of projects/companies were facing
+Infrastructure as services
+provide infinite computations(machines, VMS ), network and storage(block store)
+supports startups as cost is based on usage / reservation and load
+
+side effects/disadvantages of cloud computing
+a. we do not own the infrastructure actually it causes architechts to focus on cost optimization also
+b. also security need to be focussed more
+c. also architecht need to be serious of fault tolerance as machine may go down at any time 
+  so data recovery ,app fault tolerance and reliability has to be dealt with extreme seriousness
+  
+Load balancer algorithms
+a. round robin
+b. sticky session
+c. least connection
+d. least cpu/ram metric based
+e. least reponse time
+f. basd on geogrophical location  
+
+==========Pipe filter pattern==========
+- consider water moving through a pipe and filter
+  data is moving from source to sink
+  however each of the processor either filter it or transform the data and pushes to another queue
+  can be done in monolith but have disadvantages
+  a. can not choose specific tech stack/D.B based on that specific processing task
+  b. can not choose specific hardware eg: high ram for cache, powerful core for CPU task etc
+  c. can not choose indepdent scale count of machines
+It is combination of event driven microservices + stream processing pipeline pattern  
+
+Use case of pipes and filter
+we get an event of request and need to do data processing in multiple stages
+we can seggregate the multiple stages into different isolated tasks running in indepdent deployable units
+if we do not use seperate deployable unit than that becomes monolith with disadvantages mentioned above
+
+considerations
+a. it adds complexity and hence tougher to implment
+b. we should ensure data processors are stateless and in event all the data should be passed
+c. not good for distributed transactional cases
+
+==========Scatter Gather pattern==========
+- similar to load balancer pattern a dispatcher lies in between client and server machines
+  however in load balancer one request is dispatched to one specific worker/server
+  in scatter gather same request is goes to all the worker/server
+  eg : map reduce parallel algorithms or akka multi cluster framework
+  same request is send to multiple workers(either same application but working on different data set or different app itslef or different external systems)
+  dispatcher component then aggregates the result done by all workers like master slave algorithms
+  
+use case :
+search engine services
+client request for complex search (search on huge amount of data)-> Back end aggregator services
+  dispatches requests to multiple workers: multiple workers are running same app/code however data set to search will be different
+  this way we are able to do paralle search then individual workers passes result back to aggregator services
+  aggregater service then merges the result and transform to dto and pass to client
+  
+observations
+a. client do not know how many workers are there as we have back end for front end acting as dispatcher and aggregater
+b. worker could be external or internal but client do not know it : like facade design pattern
+c. it is very useful in highly scalable systems due to parallel computing
+
+we must have a time limit on aggregator as in cloud anytime machine might become unreachable due to 
+ netwrok overload
+ netwrok down
+ machine down due to overload
+ machine down due to disaster
+this way client do not get wait infinitely as other workers are done
+we can also use message broker between aggregator and worker using 2 message queues one for worker read and one for final result queue 
+  
+=======Transactional outbox pattern==========
+used in cae of event driven microservices
+eg:
+method() -> {
+	updateDataInDB(); //transaction supported
+	sendKafkaEvent(); // in case this gives error like kafka is down or netwrok issue not reachable 
+	-> push to secondary table and scheduler picks sends to kafka and on sucess remove from table
+	
+}  
+
+but if in line 1 transaction completed but service crashes it can not process kafka send method : will be very bad
+
+solution: use transactional outbox pattern
+in same transaction commit data in main table and outbox table, on success kafka send remove from outbox table
+but run a scheduler that picks data from outbox table and send to kafka and remove from outbox table
+remember transaction outbox pattern can cause idempotent event but that can be handled
+eg: scheduler picks data from outbox table and sends to kafka and then machine crashes (before method call of outbox table data entry removal)
+another service can send it to kafka again but we can create idempotent consumers using unique messageid
+
+
+
+=======Materialized view pattern==========
+- used for performance optimization scenarios
+- we generally model database tables/collections/data structure based on application modelling
+ for analytics or complex query it may be time consuming for user as well as more cpu intense
+ eg: fetching top 10 courses, or best purchased products
+ same query will be fetched again and again and wil do joining to create issue with latency/time for user
+ also it will be cpu intense either on d.b or in microservice adding cost(money) in cloud computing
+- we can create seperate table/view where most common query result are kept and is updated on scheduled basis
+  it might be eventual consistent but still fine as it is better performant and low in cost
+google bigquery and aws redshift support materialized view on peta bytes of data
+
+- Anti corruption pattern is used specially in case of monolith to microservice migration
+lets say we have 10 years old monolith with huge old code and complex D.B schema
+tech stack is very old
+microservice migration will ensure
+a. modularization and indepdence of these modules in deployment,scale etc
+b. upgrade the tech stack, it might upgrade the protocol like http2, reactive etc which might not be supported in old monolith
+
+steps of migration involves taking one module / d.b at a time from monolith and move to seperate microservice
+however other modules will remain inside monolith, and all inner monolith modules calls good updated microservice and vice versa
+
+while calling inner modules from external new microservice we can not call old monolith modules with new protocol
+also we ensure the microservice exposes new protocol like grpc, http2 , graphql etc
+so we add a new microservice specific to this 2 way adaptation
+new mroservice calls adater microservice with new protocol  and that converts to old protocol and move to monolith module
+also monolith module calls adapter with old protocol and adapter converts that to new protocol and redirect to new microservice
+
+however adapter will be needing money, efoort in deployment, coding testing , monitoring etc just like other service
+it will always have latency as it is middleware and we have to pay extra cost always
+
+once all modules are moved to microservice all inter service communication protocol is altest 
+and hence we can remove this adapter completely and also monolith app as well
+
+=======Back End for Front End Pattern=========
+Scenario to use
+- we have a microservices back end with API gateway as reverse proxy and it takes data fron F.E and routes to other microservices
+ however when application becomes famous we might want to add more reach in users, like desktop app, mobile app etc
+ now if we use general purpose back end / api gateway for mobile / desktop it can be bad user experience
+ a. for desktop app we might need more data
+ b. for mobile app we might need less and compact data
+ c. network communication protocl can be different for mobile app (websockets) than desktop apps
+ 
+ so instead of keeping single back end (api gateway) as general purpose with huge code base for all protocl conversions
+ we keep one api gateway per F.E category : each of back end doing tasks specific to that front end
+ 
+ - throttling or rate limiting is done on throughput and hence it is measured in 2 ways
+  transactions per unit of time
+  data per unit of time
+  
+benefits of rate limiting
+a. not allowing overutilization of resources/ loading more than capacity of resources
+b. not allowing single user to eat all the resources and potentially slow down other customers requests
+c. ensuring SLA so that we need not pay punishment money
+d. saving cost when auto scaling happens on cloud
+e. saving cost when our resource calls external cloud apis like d.b or external pay as you go resources
+f. save from ddos attack
+
+types
+a. global level: total request / throughput per unit of time per api
+   advantage: ensures limits of machines are never crossed
+   disadvantages: one user can eat up all other user's amount of capacity
+b. per user
+   advantage: ensures one user do not eat capacity of others and ensures SLA contract
+   disadvantages: can ot ensure total limits
+better to use both combined
+
+what to do in case of rate > rate limit max
+-> decline request by http status code 429
+-> push in queue and maybe process later   
+
+===========Deployment Strategies==========
+important to ensure other software architechture is good we need proper deployment strategy and testing strategy patterns
+will be common across multiple projects and hence can use it
+a. rolling deployment
+  in recreate strategy during release time we will have downtime,
+  also downtime will be huge in case of rollback if new version causes bug/issue/unable to start
+  in rolling dpeloyment using max surge policy we add new machines with new versiona nd once readinessprobe is succesful
+  it shut downs old version and this process repeats untill all old version machines are down and new machines are up
+  within the process some users might get old code running and some migh be running new one, but there will be no downtime
+  -> no downtime in deployment/release
+  -> no downtime in roll back: same max surge process is repeated but in other order of version
+  
+  benefits
+  a. no downtime during deployment and rollback
+  b. cheaper as compared to other alternatives like cacnary, blue green deployment, mirroring etc
+  disadvantages
+  mentioned above
