@@ -1,0 +1,213 @@
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+Jai Shree Ganesha
+Jai Shree Sita Rama Lakshman Hanuman
+
+- Web APIs comes in lot of ways like Graphl, grpc, soap
+  but REST is th emost de facto standard and most commonly used
+ 
+- API means Application programming interface 
+  it can also be library like jar
+  it can also we code/functionality shared over network with proper contract like json/xml
+  eg of web apis: REST, SOAP, GraphQL, GRPC, Websockets, Reactive apis etc
+  
+Why REST apis
+a. defacto standard: extremely common in industry standards
+b. lot of websites exposes functionality in REST form
+c. programming language agnostic : client and server can be implemented in its own language/platform
+d. we can make our service more famous by using this
+e. easier to implement unlike graphql , grpc, reactive etc  
+
+- Definition of API: application programming interface
+ Once we expose functionality by defining an abstract contract that is an API
+ API means nothing but an interface/funcionality sharing exposing to external world
+ eg: UI -> user interface: exposing funcionality to external user/humans
+ API -> application programming interface -> meaning sharing functionality to external application (not humans)
+ 
+Jai Shree Ganesha
+Jai Shree Sita Rama Lakshman Hanuman
+
+Rest API is coding language independent, hence we can even use mock tools like postman for client simulation
+  and beeceptor for server simulation to save time an dlearn just concept of REST
+
+Category/Types of API
+based on usage APIS are grouped into types
+a. Operating system API :
+  eg: win32 API, it exposes a  lot of servives so that O.S feature can be used to create app
+    like file system, network system etc
+    we can write code in any language but it can use these OS API to use internal OS features
+b. library API: based on programming language create jar etc
+   but here we need to import the library in the smain project
+   and it runs in the same process as that of the main application, it is fixed to specific language
+   need to create different library to support different programming language platoform
+c. Remote API
+ Expose business functionality over the netwrok
+ client calls server over the network
+ however it is based on fixed language used in server
+ eg java rmi, .net rmi, client and server has to be in same language, due to this it is becomming unpopular
+d. web api: same as remote api but it is platform agnostic from client and server
+ hence very popular
+  subcategory eg: REST, GraphQL, GRPC etc  
+
+Importance of building API
+a. Usage in UI/clients
+  in modern world we must build web and mobile app for better reach
+  in case of mobile app we must have back end APIs for functionality, can not keep those feature in app as it will be very heavy wwight
+  also to keep F.E and B.E loosely coupled we uses library like react that again should be light weight
+  so even in web app for modern library back end APIs are must
+b. extending reach of your business functionalities to external dev
+  if we built functionality using APIs one day we can even expose to external dev
+  this way we can earn money also as well as become more famous and more dev will be aware of your app ->
+  you can be more popular and hence will earn more money
+c. monetize: you can expoe to external clients and earn money if popular
+
+We understood why we need API and its importance
+but why do we need well designed api with best practises followed
+our dev are also end customers and there will be alternatives to back end APIs
+dev might switch to other alternative if best practises and good design are not followed in implementing APIs
+we should always design REST api for easy use by clients   , these industry practices helps in both
+a. making api well deisgned , consitent in nomenclature and convention : all dev can follow same conventions
+b. client will feel it easy to use the APIs
+
+
+Types of  Web apis
+a. SOAP
+   simple object access protocol
+   based on xml as req and res
+   like an RPC we will get client code generated and will actually be calling method in client that can invoke method on server internally
+   like using axis tool
+   -> Request and response is in xml format and is strict
+   meaning it follows specific tags/convention for each feature
+   like soapenv, soapheader, soap body etc, unlike rest which is completely free in req and res body
+   outdated and should be used only if functionality exposing software tech stack do not support other methods
+
+b. REST: representational state transfer
+  url + json based + resource oriented urls
+c. GraphQL     
+
+
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+=======REST======
+- REST API enables transfer of represntation of resource's state
+- Resource oriented because everything is focussed on resource's state and 
+  REST enable transfer of the resoure's state over network
+- Remember REST do not enforces resource's state (req/res) to be of specific format like json or xml
+  but json is most commonly used but we can use any format provided sercer must serialize and deserialize it  
+  
+- Use GET only for Read never use for Write/delete/update
+- In case too many parameters are there we can use post to pass request body as get do not allow request body  
+
+- POST is used to insert a new resource
+  should ensure that a request body is there request body will be state of the resource for which a new entity is to be created
+  can not be idempotent, calling same api n time create n new elements/resources
+  -> should never pass a query param : invalid otherwise whats the use of requestbody
+  also it is bad practise to have different url based on query parama in seo can cause issue
+  
+- PUT is idempotent unlike POST
+  if same curl is called n times there will be same result one resource with same state as first one
+
+other rarely used http verbs
+a. PATCH: same as PUT, idempotent but allows partial fields update of resource
+b. HEAD: same as GET, only difference is it do not have response body
+   useful in case when we want to know only if specific resource exist
+   if yes we recieve 200 ok response code or else no content 204 response code
+   saves serialization and deserialization steps as we need to check only if resource exist or not
+c. OPTIONS: it returns all the available HTTP methods allowed for specific resource
+
+------- URL structure of REST API-------------
+Very important as an api is judged on basis of url convention also this gives first impression
+and if we want to make apis more famous and usable we must follow good convention
+a. should be self explanatory
+b. should be consistent among all resources
+c. should be easy to undersand and comprehend
+
+domain nomenclature
+use fully qualified name : eg: https://api.ebay.com , https://api.iqwhatsapp.airtel.in
+api keywork is good convention for other dev to be sure that he is using exposed api only
+https only
+
+- in case we do not have flexibility add api string in domain name we can have it later just after domain name
+eg: https://iqwhatsapp.airtel.in/api/v1/send
+
+with version:
+a. https://api.ebay.com/v1/apiname
+b. https://iqwhatsapp.airtel.in/api/v1/apiname
+
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+Respose code 
+in response we have status code
+this is used to let client know if the request was succesful or not
+if not then why, for different scenarios of error/success we have different pre defined status codes
+
+importance of status code
+a. client act according to it, for 200 it fetches the body, if 500or 4xx it wont 
+    recoverable and retryable errors can be identified from this eg: system overloaded 502 can be retried after some time
+b. monitoring tool/ alerting tool act on this 	
+c. ap becmes easer to understand and it is same aross all the projects : standardised acrross all REST APIs
+
+- all http status code are integer of 3 digits
+		grouped on basis of first digit
+		
+1xx: informational status codes : do not use ever
+2xx: success : 
+3xx: redirectional : low level used only by os. or tools like api gateway
+4xx: client errors
+5xx: server errors
+
+2xx status codes
+200: status ok, as success, if this status code is there client can fetch body with no errors
+     this is default if no status code is set this will show up and dev forgets and abuse this
+201: Created, for post new resource is created, and in header we can pass the url to fetch data of this entity
+   header name is Location
+202: Accepted, for bulk messages that take some time to process we can return right away
+   it means that the server have accepted the request however since task is time consuming it will do that eventually
+   we can unblock client on this
+   also client wont recieve a callback once this is done and over
+   client needs to auto chek in scheduled job to find status of that specific request
+204: no content: eg GET returns empty response: empty body is needed
+
+400 : bad request
+401: unauthorized
+403: forbidden
+difference b/w 401 and 403 is
+we recieve 401 when username and password / access token itself is wrong
+ meaning in header of request if username/password/accesstoken do not exist in auth server d.b we get 401
+however we get 403 when username/password/accesstoken exist in auth server but role is limited to specific resource 
+
+Remember 404 will be thrown for mandatory pathvariables beeing missing in url
+for queryparam that give no data wont throw 404 as resource exist but with no item
+		
+207 http status code : this is not part of www http standard but other organisation have created this for specific use case
+in case of processing multiple entities/resources some are succeful an some are not
+we can use this we can show exact which entity was success and which ones failed
+AKA : multi status code		
+Important point to remember
+HTTP status code 207 is used with bulk processing of multiple entities/resources
+in case of single entity/resource and bulk processing is there use simple http status code like 200, or 500 accordingly
+we should not do multiple stage status code for single entity processing for multiple items
+logic should be even if one item is success send 200, in body u can give individual status
+		
+Nobody wants to write manual documentation
+and for APIs it is very important as there will be no client dev who will use such api
+because documentation helps in ease of usage of API		
+
+- OpenAPI/Swagger is defacto standard for REST API documentation
+  it provides a general format for each REST API and it helps in below
+  a. Documentation of APIs
+  b. Test bed: client dev can run the API directly without using client like postman
+  c. Helps in generating client code in platform agnostic way: like grpc with protobuff
+  d. Can implement contract first approach and client and server apis can adhere to it
+  
+- Ways to implement versioning
+ a. Header: header is good use case for metadata and this is very good approach based on rest
+    but since it is a bit tough to understand and predict less products uses this.
+ b. URL path variable: mandatory to put otherwise 404 will come and hence good one
+   based on REST practice it might cause contamination in URL so it is less presrcibed in pure REST APIS 
+   but it is most commonly used because of ease of use
+ c. Query param: worst and should never be used anymore   
+	
