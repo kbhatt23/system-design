@@ -1,0 +1,114 @@
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+Postman Mock Server URL : https://b1fd5849-2e3b-4b86-8bb7-27dcbfaf5220.mock.pstmn.io/
+
+- Postman is not just REST API testing tool but is a complete collabaration tool for api development
+  Hence Postman has features to support whole lifecycle of API development
+  eg: API designing, Documentation, Monitoring, Testing, Automation testing etc
+  
+a. Design and Defining API: Using postman we can designa dn define contract of API
+  request,response,headers etc can be defined in postman before development starts
+  using tools like swagger is integrated with postman
+b. collabaration of APIs: dev ,qa can share postman collections
+c. Testing APIs using scripts + manual
+d. documentation using swagger + its own format
+e. Mocking the API to provide sample response
+   Using this we can send mock response to client,
+  so that client and server can do the development in parallel
+f. monitor the APIs: using features it can monitor the Server APIs in scheduled basis
+  and even in health check fail can send alerts
+
+- Desktop Postman app can be used without signing in , but web app requires signing in
+- Difference b/w Desktop and webapp version of postman
+a. Desktop version do not require sign in but web app version requires sign in mandatorily
+b. Since Desktop app is running locally you will not encounter CORS errors/features
+  So web app will be running on different machine and hence CORS features will come into play
+c. Private APIs can not be accessed via web app version, only public APIs can be accessed via webapp version  
+   in summary if we want to test APIs over public then web or desktop app both works
+  but in case the API to be tested in hosted locally or in a private network
+  webapp version can not access these and hence desktop apps are preferred for these  
+
+- If you are logged in the postman app it will sync the data to the cloud
+  so in case you want to hide the working set and data do not log in
+  also do not login in the office laptop/machine so that data is secured or push to private cloud
+  better is to not login for office use and export workspace/collections and share to team members offline for collabaration
+  
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+- In Postman if we choose authentication option as inherit from parent in the dropdown
+  then it takes the authentication from parent folder
+  this way we can have authentication rule at one place(typically in folder)
+  and this same rule is applied to all the requests in that folder
+  also in any of the children request/folder we can override this rule
+  eg: we need basic auth for 3 request and for one request i need bearer token
+  so keep basic auth in root folder , keep inherit from parent in 3 request
+  and override ande put bearer token option in single request
+  
+- We can use path variables using ':varname', in param section can update it , might event use script code to populate this field
+  eg: we have one api to create order, it returns orderid in response
+  so in post script take this orderid and save in variables
+  in second GET request we can use ':orderID' L with value as {{orderID}} and dynamically this value will be populated
+- Another cool feature is bulk edit, in single shot we can create n variables and it shows up in url
+- Postman also provide setting to url encode automactically
+  eg url is : http://api.com?name=kanishk bhatt
+  here we can have special charachter liek space , so postman provide this setting to url encode automactically
+  we can turn this off as well  
+  
+- While choosing request body we have below options
+a. form-data: like html form data : username,password,email etc
+b. x-www-form-urlencoded: same as form data but data is url encoded
+c. raw: choose json,xml etc
+d. binary: for files images etc
+e. graphql  
+
+- header preset: in case we have multiple header key value pairs to be used across multiple requests in postman
+  one way will be to create these one by one in all these requests
+  better is to use header preset: create a header preset with n key value headers
+  and use this in all these multiple requests
+  
+- Postman help in generating code snippet for client side for huge range of programming langauges and frameworks
+
+- Types of variables in postman
+a. Global variables: usable across all the collections in the workspace but value is not switchable based on environment
+b. environment variables : usable across all the collections in the workspace but value is switchable based on environment
+c. collection variables : usable only in that collection with no switching of values
+
+- Remember that any variable can not be accessed outside the workspace
+  if you want we can share the variable to another workspace and have a copy
+  but any variable will be used only within the workspace
+  
+- using workspace we can group apis, monitors, collections etc into single group
+  and share it collabaratively among multiple contributor
+  we can assign multiple postman users to be able to view and contribute based on role defined  
+- Each workspace have specific visibility
+  personal: visible to only you and no one can view or contribute
+  private: visible to limited set of users and have rbac for each user
+  public: anyone can view and contribute
+  team: team members can view
+  in postman free account we can use personal workspace + restricted team mode+ public
+  private is not available
+  for private + complete team mode we need to pay
+
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman    
+
+- postman provides a feature scratchpad where we can work in postman in offline
+  meaning it do not send and sync the data to workspace cloud
+  so in case there is no network or we do not want to share data to postman cloud scratchpad
+  data only shared locally and not kept in cloud
+  we can migrate scratchpad to workspace
+  
+- To launch the scratchpad we go to setttings and select scratchpad
+  this opens a new window similar to workspace and says warning that data is not synched to cloud and swithc to workspace
+  scratchpad is copy of workspace only thing is data is stored locally and wont be synhced to cloud  
+  
+- To migrate from scratchpad to workspace we must first export the scratchpad data into a file
+  then go to workspace and import the same data file
+  path: setting -> data -> export data
+  go to workspace -> setting -> data -> import data from file generated in above step  
+  Remember the above data export option exports all the data in taht workpaces
+  meaning it exports settings, collections, mock server, monitors, environments everything inot json files
+  lateron in another workspace we can import these files one by one  
+   

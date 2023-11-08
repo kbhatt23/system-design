@@ -1,0 +1,63 @@
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+Course API Github URL:
+https://github.com/vdespa/quick-introduction-to-postman/blob/main/simple-tool-rental-api.md
+
+- Postman is free for most use cases
+- It comes in 3 flavors one is standalone app, another is browser web , chrome extension
+  don not use chrome extension as it is obsolete
+  
+- Postman acts as GUI tool that supports api call over multiple protocols like http, graphql etc
+
+- In setting variables we have 2 options one is initial value and another one is current value
+  initial value is used to share over json export
+  current value is actually used by postman
+  so if some variable is sensitive like password we can keep dummy text like "your password" in initial value
+  and in current value we can give actual value of password
+  while exporting and sharing postman collection only initial value is shared and current value is not
+  so postman can sensitively use current value
+  
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+- In Postman we can declare placeholder for path variable using :variablename
+  and in path variable key value we can set this and dynamically postman will override this value before calling API
+  eg: {{BASE_URL}}/tools/:toolid
+  here toolid become path variable placeholder in postman
+  
+- Postman allows oob variables that can generate random names, random values etc
+  these starts with $ eg: "customerName": "{{$randomFullName}}"
+  
+When to use postman
+a. communication with apis
+b. api testing  
+  
+When not to use postman
+a. user interaction ui
+b. performance testing
+c. security/penetration testing
+
+om shree ganeshaya namah
+om shree sita rama lakshman hanuman
+
+- We can run the collections at once using collection runner
+  sequence can be maintained in the ui
+  however there are functions like postman.nextRequest("request name")
+  using this we can define next request to execute or set null if to end
+  never keep this as request name of previous request otherwise it will go in never ending loop
+  
+- If we want to schedule the collection runner to execute automatically during specific time
+  we can use monitor runner
+
+- To execute the postman collections using CL we can use CLI tool newman
+  but it needs node js by default as postman is built on js
+ npm install -g newman
+ newman --version  
+ 
+- To make newman run the collection we can export the postman collection to json 
+   this json can also be imported in another dev's postman
+  but the same json an be used by newman to run the entire collection
+  newman run postman-course1.postman_collection.json
+  we can also use share collection feature that generates an online link
+  using newman we can run this link collection as well

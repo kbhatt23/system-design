@@ -1,0 +1,83 @@
+{
+	"version": 1,
+	"collections": [
+		{
+			"id": "0c176a61-a856-4279-b153-556bcfd2711d",
+			"uid": "0-0c176a61-a856-4279-b153-556bcfd2711d",
+			"name": "scratchpad-collection",
+			"description": null,
+			"auth": null,
+			"events": null,
+			"variables": [],
+			"order": [
+				"3cd2e21f-a6f7-4966-940b-aa85b47f7b4f"
+			],
+			"folders_order": [],
+			"protocolProfileBehavior": {},
+			"createdAt": "2023-11-08T08:03:49.953Z",
+			"folders": [],
+			"requests": [
+				{
+					"id": "3cd2e21f-a6f7-4966-940b-aa85b47f7b4f",
+					"uid": "0-3cd2e21f-a6f7-4966-940b-aa85b47f7b4f",
+					"name": "postman-echo",
+					"url": "http://postman-echo.com/get",
+					"description": "",
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": null,
+					"method": "GET",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [
+						"c830c398-d04d-40e1-983e-d15b6578db05"
+					],
+					"responses": [
+						{
+							"id": "c830c398-d04d-40e1-983e-d15b6578db05",
+							"uid": "0-c830c398-d04d-40e1-983e-d15b6578db05",
+							"name": "postman-echo",
+							"status": null,
+							"mime": null,
+							"language": null,
+							"text": null,
+							"responseCode": null,
+							"requestObject": {
+								"data": null,
+								"dataMode": null,
+								"dataOptions": null,
+								"headerData": null,
+								"method": "GET",
+								"pathVariableData": [],
+								"queryParams": [],
+								"url": "http://postman-echo.com/get"
+							},
+							"headers": null,
+							"cookies": null,
+							"request": "3cd2e21f-a6f7-4966-940b-aa85b47f7b4f",
+							"collection": "0c176a61-a856-4279-b153-556bcfd2711d",
+							"owner": "0"
+						}
+					],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "0c176a61-a856-4279-b153-556bcfd2711d",
+					"pathVariables": {}
+				}
+			]
+		}
+	],
+	"environments": [
+		{
+			"id": "7487c6d4-df35-47e9-9cc5-7f7a4db2e3a0",
+			"name": "My Workspace - globals",
+			"values": []
+		}
+	],
+	"headerPresets": [],
+	"globals": []
+}
